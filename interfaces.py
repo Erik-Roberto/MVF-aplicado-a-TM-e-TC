@@ -121,9 +121,8 @@ class InterfaceCCTipo3(Interface):
         super().__init__(*args, **kwargs)
         self.phi_inf = phi_inf
         self.definir_mod()
-
-    def calcular_h(self):
-        pass
+        self.calcular_h = self.cel.propriedades.coeficiente_convectivo
+        # TODO: Propriedades do ar
 
     def calc_a(self):
         h = self.calcular_h()

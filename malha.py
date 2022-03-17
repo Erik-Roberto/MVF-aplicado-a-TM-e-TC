@@ -1,7 +1,9 @@
 import numpy as np
 
 from celula import Celula
-from condicoes import Condicoes, cc_temperatura, cc_concentracao
+from condicoes import Condicoes
+from frame import Frame 
+
 
 class Malha:
     def __init__(self, dominio, divisoes, tipo_problema, phi_0, geometria):
@@ -52,13 +54,10 @@ class Malha:
         return tipo
 
         
-    def definir_cc(self):
-        if self.tipo_problema.lower() == 'massa':
-            self.condicoes = cc_concentracao
-        elif self.tipo_problema.lower() == 'temepratura':
-            self.condicoes = cc_temperatura
-        else:
-            raise ValueError("Tipo de problema inválido.")
+    def definir_cc(self, frame = None):
+        if not frame:
+            frame = Frame(self.ns1, self.ns2)
+        self.condicoes = frame
 
     def gerar_malha(self):
         for i in range(self.ns2): # linhas
@@ -67,8 +66,15 @@ class Malha:
                 tipo = self.switcher(i, j)
                 pos1 = (self.s1[j+1] + self.s1[j])
                 pos2 = (self.s2[j+1] + self.s2[j])
-                condicoes = {}
-                celula = Celula(self, self.phi_0, tipo, self.geometria, self.tipo_problema, (pos1, pos2), condicoes)
+                celula = Celula(self,
+                                self.phi_0,
+                                tipo,
+                                self.geometria,
+                                self.tipo_problema,
+                                (pos1, pos2),
+                                (i, j),
+                                self.condicoes)
+                celula.setup()
                 self.malha[i].append(celula)
             
 
