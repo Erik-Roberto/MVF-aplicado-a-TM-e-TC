@@ -65,6 +65,6 @@ class Frame:
     def get_condicao(self, pos, borda):
         condicoes = self.switcher(borda)
         for dicionario in condicoes:
-            if dicionario["pos"][0] <= pos < dicionario["pos"][0]:
+            if dicionario["pos"][0] <= pos < dicionario["pos"][1]:
                 return (dicionario["tipo"],  dicionario["valor"])
 

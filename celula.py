@@ -68,8 +68,8 @@ class Celula:
         if self.geometria.lower() == 'cilindrico':
             dr = self.malha.ds1
             dz = self.malha.ds2
-            r_ext = self.pos[0] + self.dr/2
-            r_int = self.pos[0] - self.dr/2
+            r_ext = self.pos[0] + dr/2
+            r_int = self.pos[0] - dr/2
             self.geo = geo.Cilindrico(dz, dr, r_ext, r_int)
         elif self.geometria.lower() == 'cartesiano':
             dx = self.malha.ds1
@@ -119,7 +119,7 @@ class Celula:
             # Vertice inferior esquerdo
             condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
             sul = self.case_condicoes.get(condicao_sul[0])
-            valor_cc_sul = condicao_norte[1]
+            valor_cc_sul = condicao_sul[1]
 
             condicao_interior = self.condicoes.get_condicao(linha, "interior")
             interior = self.case_condicoes.get(condicao_interior[0])
@@ -135,7 +135,7 @@ class Celula:
             # Vertice inferior direito
             condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
             sul = self.case_condicoes.get(condicao_sul[0])
-            valor_cc_sul = condicao_norte[1]
+            valor_cc_sul = condicao_sul[1]
 
             condicao_exterior = self.condicoes.get_condicao(linha, "exterior")
             exterior = self.case_condicoes.get(condicao_exterior[0])
@@ -162,7 +162,7 @@ class Celula:
             # Aresta inferior
             condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
             sul = self.case_condicoes.get(condicao_sul[0])
-            valor_cc_sul = condicao_norte[1]
+            valor_cc_sul = condicao_sul[1]
 
             self.norte = self.norte_std()
             self.sul = sul(self, self.geo.ds2, self.geo.area_inferior,
