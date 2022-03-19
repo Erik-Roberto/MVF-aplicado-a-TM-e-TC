@@ -34,9 +34,7 @@ class Malha:
         text = ""
         for lista in self.malha:
             for celula in lista:
-                text += f"{celula.valores[0]}"    
-                text += 2*" "
-            text += "\n"
+                text += f"celula {celula.coord}: {celula.__str__()}"    
         return text
 
 
@@ -83,7 +81,7 @@ class Malha:
             for j in range(self.ns1): #colunas
                 tipo = self.switcher(i, j)
                 pos1 = (self.s1[j+1] + self.s1[j])
-                pos2 = (self.s2[j+1] + self.s2[j])
+                pos2 = (self.s2[i+1] + self.s2[i])
                 celula = Celula(self,
                                 self.phi_0,
                                 tipo,

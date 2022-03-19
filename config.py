@@ -29,8 +29,8 @@ dimensao2 = 0.005        #m (z / y)
 geometria = 'cilindrico'   #Opções: cilindrico ou cartesiano
 
 #Parametros de simulação
-n_s1 = 3                 #  (R / x)
-n_s2 = 3                 #  (z / y)
+n_s1 = 6                 #  (R / x)
+n_s2 = 7                 #  (z / y)
 n_t = 3                  # tempo
 
 tolerancia = 10**-3

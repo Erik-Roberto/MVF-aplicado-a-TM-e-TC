@@ -43,21 +43,41 @@ class Frame:
 
 
     def definir_borda_superior(self, lista):
+        """
+        lista (lista): Lista com todas as condições de contorno nessa fronteira
+        Exemplo: 
+        [{"pos": (0, self.ns1), "tipo": Condicoes.Tipo_1, "valor": 273},...]
+        """
         self.verifica_condicoes(lista)
         self.borda_superior = lista
 
 
     def definir_borda_inferior(self, lista):
+        """
+        lista (lista): Lista com todas as condições de contorno nessa fronteira
+        Exemplo: 
+        [{"pos": (0, self.ns1), "tipo": Condicoes.Tipo_1, "valor": 273},...]
+        """
         self.verifica_condicoes(lista)
         self.borda_inferior = lista
 
 
     def definir_borda_exterior(self, lista):
+        """
+        lista (lista): Lista com todas as condições de contorno nessa fronteira
+        Exemplo: 
+        [{"pos": (0, self.ns1), "tipo": Condicoes.Tipo_1, "valor": 273},...]
+        """
         self.verifica_condicoes(lista)
         self.borda_exterior = lista
 
 
     def definir_borda_interior(self, lista):
+        """
+        lista (lista): Lista com todas as condições de contorno nessa fronteira
+        Exemplo: 
+        [{"pos": (0, self.ns1), "tipo": Condicoes.Tipo_1, "valor": 273},...]
+        """
         self.verifica_condicoes(lista)
         self.borda_interior = lista
 

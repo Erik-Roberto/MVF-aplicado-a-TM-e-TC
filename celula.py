@@ -1,5 +1,3 @@
-import numpy as np
-
 import interfaces as inter
 import geometrias as geo
 from condicoes import Condicoes
@@ -34,6 +32,15 @@ class Celula:
         self.condicoes = condicoes
         self.tipo_problema = tipo_problema
         self.geometria = geometria
+
+
+    def __str__(self):
+        text = f'\tnorte: {self.norte}\n'
+        text += f'\tsul: {self.sul}\n'
+        text += f'\tinterior: {self.interior}\n'
+        text += f'\texterior: {self.exterior}\n'
+        return text
+
 
     def setup(self):
         """ Inicializa as estruturas da célula
@@ -85,120 +92,174 @@ class Celula:
         coluna = self.coord[1]
         if self.tipo_celula == 1:
             # Vértice superior esquerdo
-            condicao_norte = self.condicoes.get_condicao(coluna, "superior")
-            norte = self.case_condicoes.get(condicao_norte[0])
-            valor_cc_norte = condicao_norte[1]
-            
-            condicao_interior = self.condicoes.get_condicao(linha, "interior")
-            interior = self.case_condicoes.get(condicao_interior[0])
-            valor_cc_interior = condicao_interior[1]
+            self.tipo_celula_1(coluna, linha)
 
-            self.norte = norte(self, self.geo.ds2, self.geo.area_superior,
-                                valor_cc_norte, tipo = 'saida')
-            self.sul = self.sul_std()
-            self.exterior = self.exterior_std()
-            self.interior = interior(self, self.geo.ds1, self.geo.area_interna, 
-                                     valor_cc_interior, tipo = 'entrada')
         elif self.tipo_celula == 2:
             # Vertice superior direito
-            condicao_norte = self.condicoes.get_condicao(coluna, "superior")
-            norte = self.case_condicoes.get(condicao_norte[0])
-            valor_cc_norte = condicao_norte[1]
-            
-            condicao_exterior = self.condicoes.get_condicao(linha, "exterior")
-            exterior = self.case_condicoes.get(condicao_exterior[0])
-            valor_cc_exterior = condicao_exterior[1]
+            self.tipo_celula_2(coluna, linha)
 
-            self.norte = norte(self, self.geo.ds2, self.geo.area_superior,
-                                valor_cc_norte, tipo = 'saida')
-            self.sul = self.sul_std()
-            self.exterior = exterior(self, self.geo.ds1, self.geo.area_externa,
-                                     valor_cc_exterior, tipo = 'saida')
-            self.interior = self.interior_std()
         elif self.tipo_celula == 3:
             # Vertice inferior esquerdo
-            condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
-            sul = self.case_condicoes.get(condicao_sul[0])
-            valor_cc_sul = condicao_sul[1]
+            self.tipo_celula_3(coluna, linha)
 
-            condicao_interior = self.condicoes.get_condicao(linha, "interior")
-            interior = self.case_condicoes.get(condicao_interior[0])
-            valor_cc_interior = condicao_interior[1]
-
-            self.norte = self.norte_std()
-            self.sul = sul(self, self.geo.ds2, self.geo.area_inferior,
-                            valor_cc_sul, tipo = 'entrada')
-            self.exterior = self.exterior_std()
-            self.interior = interior(self, self.geo.ds1, self.geo.area_interna,
-                                     valor_cc_interior, tipo = 'entrada')
         elif self.tipo_celula == 4:
             # Vertice inferior direito
-            condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
-            sul = self.case_condicoes.get(condicao_sul[0])
-            valor_cc_sul = condicao_sul[1]
+            self.tipo_celula_4(coluna, linha)
 
-            condicao_exterior = self.condicoes.get_condicao(linha, "exterior")
-            exterior = self.case_condicoes.get(condicao_exterior[0])
-            valor_cc_exterior = condicao_exterior[1]
-
-            self.norte = self.norte_std()
-            self.sul = sul(self, self.geo.ds2, self.geo.area_inferior,
-                            valor_cc_sul, tipo = 'entrada')
-            self.exterior = exterior(self, self.geo.ds1, self.geo.area_externa,
-                                     valor_cc_exterior, tipo = 'saida')
-            self.interior = self.interior_std()
         elif self.tipo_celula == 5:
             # Aresta superior
-            condicao_norte = self.condicoes.get_condicao(coluna, "superior")
-            norte = self.case_condicoes.get(condicao_norte[0])
-            valor_cc_norte = condicao_norte[1]
+            self.tipo_celula_5(coluna)
 
-            self.norte = norte(self, self.geo.ds2, self.geo.area_superior,
-                                 valor_cc_norte, tipo = 'saida')
-            self.sul = self.sul_std()
-            self.exterior = self.exterior_std()
-            self.interior = self.interior_std()
         elif self.tipo_celula == 6:
             # Aresta inferior
-            condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
-            sul = self.case_condicoes.get(condicao_sul[0])
-            valor_cc_sul = condicao_sul[1]
+            self.tipo_celula_6(coluna)
 
-            self.norte = self.norte_std()
-            self.sul = sul(self, self.geo.ds2, self.geo.area_inferior,
-                             valor_cc_sul, tipo = 'entrada')
-            self.exterior = self.exterior_std()
-            self.interior = self.interior_std()
         elif self.tipo_celula == 7:
             # Aresta direita
-            condicao_exterior = self.condicoes.get_condicao(linha, "exterior")
-            exterior = self.case_condicoes.get(condicao_exterior[0])
-            valor_cc_exterior = condicao_exterior[1]
+            self.tipo_celula_7(linha)
 
-            self.norte = self.norte_std()
-            self.sul = self.sul_std()
-            self.exterior = exterior(self, self.geo.ds1, self.geo.area_externa,
-                                     valor_cc_exterior, tipo = 'saida')
-            self.interior = self.interior_std()
         elif self.tipo_celula == 8:
             # Aresta esquerda
-            condicao_interior = self.condicoes.get_condicao(linha, "interior")
-            interior = self.case_condicoes.get(condicao_interior[0])
-            valor_cc_interior = condicao_interior[1]
+            self.tipo_celula_8(linha)
 
-            self.norte = self.norte_std()
-            self.sul = self.sul_std()
-            self.exterior = self.exterior_std()
-            self.interior = interior(self, self.geo.ds1, self.geo.area_interna,
-                                     valor_cc_interior, tipo = 'entrada')
         elif self.tipo_celula == 9:
             # Volume interno
-            self.norte = self.norte_std()
-            self.sul = self.sul_std()
-            self.exterior = self.exterior_std()
-            self.interior = self.interior_std()
+            self.tipo_celula_9()
+
         else:
             raise ValueError("Tipo de célula não válido.")
+
+    
+    def tipo_celula_1(self, coluna, linha):
+        # Vértice superior esquerdo
+        condicao_norte = self.condicoes.get_condicao(coluna, "superior")
+        norte = self.case_condicoes.get(condicao_norte[0])
+        valor_cc_norte = condicao_norte[1]
+        
+        condicao_interior = self.condicoes.get_condicao(linha, "interior")
+        interior = self.case_condicoes.get(condicao_interior[0])
+        valor_cc_interior = condicao_interior[1]
+
+        self.norte = norte(self, self.geo.ds2, self.geo.area_superior,
+                            valor_cc_norte, tipo = 'saida')
+        self.sul = self.sul_std()
+        self.exterior = self.exterior_std()
+        self.interior = interior(self, self.geo.ds1, self.geo.area_interna, 
+                                    valor_cc_interior, tipo = 'entrada')
+
+
+    def tipo_celula_2(self, coluna, linha):
+        # Vertice superior direito
+        condicao_norte = self.condicoes.get_condicao(coluna, "superior")
+        norte = self.case_condicoes.get(condicao_norte[0])
+        valor_cc_norte = condicao_norte[1]
+        
+        condicao_exterior = self.condicoes.get_condicao(linha, "exterior")
+        exterior = self.case_condicoes.get(condicao_exterior[0])
+        valor_cc_exterior = condicao_exterior[1]
+
+        self.norte = norte(self, self.geo.ds2, self.geo.area_superior,
+                            valor_cc_norte, tipo = 'saida')
+        self.sul = self.sul_std()
+        self.exterior = exterior(self, self.geo.ds1, self.geo.area_externa,
+                                    valor_cc_exterior, tipo = 'saida')
+        self.interior = self.interior_std()
+
+
+    def tipo_celula_3(self, coluna, linha):
+        # Vertice inferior esquerdo
+        condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
+        sul = self.case_condicoes.get(condicao_sul[0])
+        valor_cc_sul = condicao_sul[1]
+
+        condicao_interior = self.condicoes.get_condicao(linha, "interior")
+        interior = self.case_condicoes.get(condicao_interior[0])
+        valor_cc_interior = condicao_interior[1]
+
+        self.norte = self.norte_std()
+        self.sul = sul(self, self.geo.ds2, self.geo.area_inferior,
+                        valor_cc_sul, tipo = 'entrada')
+        self.exterior = self.exterior_std()
+        self.interior = interior(self, self.geo.ds1, self.geo.area_interna,
+                                    valor_cc_interior, tipo = 'entrada')
+        
+
+    def tipo_celula_4(self, coluna, linha):
+        # Vertice inferior direito
+        condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
+        sul = self.case_condicoes.get(condicao_sul[0])
+        valor_cc_sul = condicao_sul[1]
+
+        condicao_exterior = self.condicoes.get_condicao(linha, "exterior")
+        exterior = self.case_condicoes.get(condicao_exterior[0])
+        valor_cc_exterior = condicao_exterior[1]
+
+        self.norte = self.norte_std()
+        self.sul = sul(self, self.geo.ds2, self.geo.area_inferior,
+                        valor_cc_sul, tipo = 'entrada')
+        self.exterior = exterior(self, self.geo.ds1, self.geo.area_externa,
+                                    valor_cc_exterior, tipo = 'saida')
+        self.interior = self.interior_std()
+
+
+    def tipo_celula_5(self, coluna):
+        # Aresta superior
+        condicao_norte = self.condicoes.get_condicao(coluna, "superior")
+        norte = self.case_condicoes.get(condicao_norte[0])
+        valor_cc_norte = condicao_norte[1]
+
+        self.norte = norte(self, self.geo.ds2, self.geo.area_superior,
+                                valor_cc_norte, tipo = 'saida')
+        self.sul = self.sul_std()
+        self.exterior = self.exterior_std()
+        self.interior = self.interior_std()
+
+
+    def tipo_celula_6(self, coluna):
+        # Aresta inferior
+        condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
+        sul = self.case_condicoes.get(condicao_sul[0])
+        valor_cc_sul = condicao_sul[1]
+
+        self.norte = self.norte_std()
+        self.sul = sul(self, self.geo.ds2, self.geo.area_inferior,
+                            valor_cc_sul, tipo = 'entrada')
+        self.exterior = self.exterior_std()
+        self.interior = self.interior_std()
+
+
+    def tipo_celula_7(self, linha):
+        # Aresta direita
+        condicao_exterior = self.condicoes.get_condicao(linha, "exterior")
+        exterior = self.case_condicoes.get(condicao_exterior[0])
+        valor_cc_exterior = condicao_exterior[1]
+
+        self.norte = self.norte_std()
+        self.sul = self.sul_std()
+        self.exterior = exterior(self, self.geo.ds1, self.geo.area_externa,
+                                    valor_cc_exterior, tipo = 'saida')
+        self.interior = self.interior_std()
+
+
+    def tipo_celula_8(self, linha):
+         # Aresta esquerda
+        condicao_interior = self.condicoes.get_condicao(linha, "interior")
+        interior = self.case_condicoes.get(condicao_interior[0])
+        valor_cc_interior = condicao_interior[1]
+
+        self.norte = self.norte_std()
+        self.sul = self.sul_std()
+        self.exterior = self.exterior_std()
+        self.interior = interior(self, self.geo.ds1, self.geo.area_interna,
+                                    valor_cc_interior, tipo = 'entrada')
+
+
+    def tipo_celula_9(self):
+        # Volume interno
+        self.norte = self.norte_std()
+        self.sul = self.sul_std()
+        self.exterior = self.exterior_std()
+        self.interior = self.interior_std()
 
 
     def norte_std(self):

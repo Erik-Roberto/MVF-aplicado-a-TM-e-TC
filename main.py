@@ -2,6 +2,8 @@ from malha import Malha
 from frame import Frame
 import config as conf
 
+
+
 def main():
     dominio = [
         (0, conf.dimensao1),
@@ -21,9 +23,8 @@ def main():
         phi_0 = conf.temperatura_ini,
         geometria = conf.geometria
         )
-    
+  
     frame = Frame(conf.n_s1, conf.n_s2)
-
     malha.setup(frame = frame)
     print(malha)
 
