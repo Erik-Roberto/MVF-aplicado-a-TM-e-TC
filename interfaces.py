@@ -44,13 +44,13 @@ class Interface(ABC):
 class InterfaceDifusiva(Interface):
     def calc_a(self):
         numerador = self.area*self.cel.gama2
-        denominador = self.cel.vol*self.cel.gama1*self.ds
+        denominador = self.cel.geo.volume*self.cel.gama1*self.ds
         return numerador/denominador
 
 
     def calc_anb(self):
         numerador = -self.area*self.cel.gama2
-        denominador = self.cel.vol*self.cel.gama1*self.ds
+        denominador = self.cel.geo.volume*self.cel.gama1*self.ds
         return numerador/denominador
 
 
@@ -71,7 +71,7 @@ class InterfaceCCTipo1(Interface):
 
     def calc_a(self):
         numerador = self.area*self.cel.gama2
-        denominador = self.cel.vol*self.cel.gama1*self.ds
+        denominador = self.cel.geo.volume*self.cel.gama1*self.ds
         return numerador/denominador
 
 
@@ -81,7 +81,7 @@ class InterfaceCCTipo1(Interface):
 
     def calc_b(self):
         numerador = self.area*self.cel.gama2
-        denominador = self.cel.vol*self.cel.gama1*self.ds
+        denominador = self.cel.geo.volume*self.cel.gama1*self.ds
         return numerador/denominador
 
 
@@ -106,7 +106,7 @@ class InterfaceCCTipo2(Interface):
 
     def calc_b(self):
         numerador = self.mod*self.area*self.fluxo
-        denominador = self.cel.vol*self.cel.gama1
+        denominador = self.cel.geo.volume*self.cel.gama1
         return numerador/denominador
 
 
@@ -127,7 +127,7 @@ class InterfaceCCTipo3(Interface):
     def calc_a(self):
         h = self.calcular_h()
         numerador = self.mod*self.area*h
-        denominador = self.cel.vol*self.cel.gama1
+        denominador = self.cel.geo.volume*self.cel.gama1
         return numerador/denominador
 
 
@@ -138,7 +138,7 @@ class InterfaceCCTipo3(Interface):
     def calc_b(self):
         h = self.calcular_h()
         numerador = self.mod*self.area*h*self.phi_inf
-        denominador = self.cel.vol*self.cel.gama1
+        denominador = self.cel.geo.volume*self.cel.gama1
         return numerador/denominador
 
 

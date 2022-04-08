@@ -1,7 +1,10 @@
+import numpy as np
+
 import interfaces as inter
 import geometrias as geo
 from condicoes import Condicoes
 import propriedades as prop
+
 
 class Celula:
     case_condicoes = {
@@ -25,7 +28,7 @@ class Celula:
                          exemplo - {'norte': (Condicoes.Tipo_1, phi_f)}
         """
         self.malha = malha
-        self.valores = [phi_0]
+        self.valores = np.array([phi_0], dtype = float)
         self.tipo_celula = tipo_celula
         self.pos = pos
         self.coord = coordenadas
@@ -57,9 +60,19 @@ class Celula:
         a_sul = self.sul.calc_anb()
         a_exterior = self.exterior.calc_anb()
         a_interior = self.interior.calc_anb()
-        a_p = self.norte.calc_a() + self.sul.calc_a() + self.exterior.calc_a() + self.interior.calc_a()
-        b = self.norte.calc_b() + self.sul.calc_b() + self.exterior.calc_b() + self.interior.calc_b()
-        return (a_norte, a_sul, a_exterior, a_interior, a_p, b)
+        a0, b0 = self.calc_a0()
+        a_p = a0 + self.norte.calc_a() + self.sul.calc_a() + self.exterior.calc_a() + self.interior.calc_a()
+        b = b0 + self.norte.calc_b() + self.sul.calc_b() + self.exterior.calc_b() + self.interior.calc_b()
+        return (a_norte, a_interior, a_p, a_exterior, a_sul, b)
+
+
+    def calc_a0(self):
+        a0 = 1/self.malha.dt
+        b = self.valores[-1]/self.malha.dt
+        return a0, b
+
+    def update_valores(self, phi):
+        self.valores = np.append(self.valores, phi)
 
 
     def definir_propriedades(self):
@@ -140,12 +153,12 @@ class Celula:
         interior = self.case_condicoes.get(condicao_interior[0])
         valor_cc_interior = condicao_interior[1]
 
-        self.norte = norte(self, self.geo.ds2, self.geo.area_superior,
-                            valor_cc_norte, tipo = 'saida')
+        self.norte = norte(valor_cc_norte, self, self.geo.ds2,
+                             self.geo.area_superior, tipo = 'saida')
         self.sul = self.sul_std()
         self.exterior = self.exterior_std()
-        self.interior = interior(self, self.geo.ds1, self.geo.area_interna, 
-                                    valor_cc_interior, tipo = 'entrada')
+        self.interior = interior(valor_cc_interior, self, self.geo.ds1,
+                                     self.geo.area_interna, tipo = 'entrada')
 
 
     def tipo_celula_2(self, coluna, linha):
@@ -158,11 +171,11 @@ class Celula:
         exterior = self.case_condicoes.get(condicao_exterior[0])
         valor_cc_exterior = condicao_exterior[1]
 
-        self.norte = norte(self, self.geo.ds2, self.geo.area_superior,
-                            valor_cc_norte, tipo = 'saida')
+        self.norte = norte(valor_cc_norte, self, self.geo.ds2,
+                             self.geo.area_superior, tipo = 'saida')
         self.sul = self.sul_std()
-        self.exterior = exterior(self, self.geo.ds1, self.geo.area_externa,
-                                    valor_cc_exterior, tipo = 'saida')
+        self.exterior = exterior(valor_cc_exterior, self, self.geo.ds1,
+                                 self.geo.area_externa,  tipo = 'saida')
         self.interior = self.interior_std()
 
 
@@ -177,11 +190,11 @@ class Celula:
         valor_cc_interior = condicao_interior[1]
 
         self.norte = self.norte_std()
-        self.sul = sul(self, self.geo.ds2, self.geo.area_inferior,
-                        valor_cc_sul, tipo = 'entrada')
+        self.sul = sul(valor_cc_sul, self, self.geo.ds2,
+                         self.geo.area_inferior,  tipo = 'entrada')
         self.exterior = self.exterior_std()
-        self.interior = interior(self, self.geo.ds1, self.geo.area_interna,
-                                    valor_cc_interior, tipo = 'entrada')
+        self.interior = interior(valor_cc_interior, self, self.geo.ds1,
+                                 self.geo.area_interna, tipo = 'entrada')
         
 
     def tipo_celula_4(self, coluna, linha):
@@ -195,10 +208,10 @@ class Celula:
         valor_cc_exterior = condicao_exterior[1]
 
         self.norte = self.norte_std()
-        self.sul = sul(self, self.geo.ds2, self.geo.area_inferior,
-                        valor_cc_sul, tipo = 'entrada')
-        self.exterior = exterior(self, self.geo.ds1, self.geo.area_externa,
-                                    valor_cc_exterior, tipo = 'saida')
+        self.sul = sul(valor_cc_sul, self, self.geo.ds2,
+                         self.geo.area_inferior, tipo = 'entrada')
+        self.exterior = exterior(valor_cc_exterior, self, self.geo.ds1,
+                                 self.geo.area_externa, tipo = 'saida')
         self.interior = self.interior_std()
 
 
@@ -208,8 +221,8 @@ class Celula:
         norte = self.case_condicoes.get(condicao_norte[0])
         valor_cc_norte = condicao_norte[1]
 
-        self.norte = norte(self, self.geo.ds2, self.geo.area_superior,
-                                valor_cc_norte, tipo = 'saida')
+        self.norte = norte(valor_cc_norte, self, self.geo.ds2,
+                             self.geo.area_superior,  tipo = 'saida')
         self.sul = self.sul_std()
         self.exterior = self.exterior_std()
         self.interior = self.interior_std()
@@ -222,8 +235,8 @@ class Celula:
         valor_cc_sul = condicao_sul[1]
 
         self.norte = self.norte_std()
-        self.sul = sul(self, self.geo.ds2, self.geo.area_inferior,
-                            valor_cc_sul, tipo = 'entrada')
+        self.sul = sul(valor_cc_sul, self, self.geo.ds2,
+                         self.geo.area_inferior,  tipo = 'entrada')
         self.exterior = self.exterior_std()
         self.interior = self.interior_std()
 
@@ -236,8 +249,8 @@ class Celula:
 
         self.norte = self.norte_std()
         self.sul = self.sul_std()
-        self.exterior = exterior(self, self.geo.ds1, self.geo.area_externa,
-                                    valor_cc_exterior, tipo = 'saida')
+        self.exterior = exterior(valor_cc_exterior, self, self.geo.ds1,
+                                 self.geo.area_externa,  tipo = 'saida')
         self.interior = self.interior_std()
 
 
@@ -250,8 +263,8 @@ class Celula:
         self.norte = self.norte_std()
         self.sul = self.sul_std()
         self.exterior = self.exterior_std()
-        self.interior = interior(self, self.geo.ds1, self.geo.area_interna,
-                                    valor_cc_interior, tipo = 'entrada')
+        self.interior = interior(valor_cc_interior, self, self.geo.ds1,
+                                 self.geo.area_interna,  tipo = 'entrada')
 
 
     def tipo_celula_9(self):
@@ -278,9 +291,9 @@ class Celula:
         return inter.InterfaceDifusiva(self, self.geo.ds1, self.geo.area_interna)
 
 
-    def calc_gama1(self):
-        return self.propriedades.gama1()
+    def calc_gama1(self): #FIXME: Mudar automaticamente quem é phi e phi2 com base no tipo do problema
+        return self.propriedades.gama1(1, self.valores[-1])
 
 
-    def calc_gama2(self):
-        return self.propriedades.gama2()
+    def calc_gama2(self): #FIXME: Mudar automaticamente quem é phi e phi2 com base no tipo do problema
+        return self.propriedades.gama2(1, self.valores[-1])

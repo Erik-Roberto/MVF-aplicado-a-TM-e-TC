@@ -1,4 +1,3 @@
-from matplotlib.pyplot import text
 import numpy as np
 
 from celula import Celula
@@ -28,7 +27,7 @@ class Malha:
         self.geometria = geometria
         self.tipo_problema = tipo_problema
         self.malha = []
-
+        self.index_temporal = 1
 
     def __str__(self):
         text = ""
@@ -42,6 +41,21 @@ class Malha:
         self.discretizar_dominio()
         self.definir_cc(frame)
         self.gerar_malha()
+        self.qtd_celulas = len(self.malha)*len(self.malha[0])
+        self.coeficientes = np.zeros(shape = (self.qtd_celulas, 5), dtype = float)   
+        self.vetor_independente = np.zeros(shape = self.qtd_celulas, dtype = float)
+        self.phi = np.zeros(shape = self.qtd_celulas, dtype = float)
+
+
+    def gerar_sistema_linear(self):
+        for i in range(self.ns2):
+            for j in range(self.ns1):
+                index = i*self.ns1 + j
+                celula = self.malha[i][j]
+                coeficientes = celula.calc_coefs()
+                self.coeficientes[index][:] = coeficientes[:5]
+                self.vetor_independente[index] = coeficientes[5]
+                self.phi[index] = celula.valores[self.index_temporal - 1]
 
 
     def switcher(self, i, j):

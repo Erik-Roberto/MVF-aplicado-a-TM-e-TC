@@ -32,6 +32,7 @@ class Frame:
                 chave = [k for k in dicionario.keys() if not k in chaves]
                 raise ValueError(f"A(s) chave(s) {chave} deve(m) ser passada(s).")
 
+
     def switcher(self, borda):
         opcoes = {
             "superior": self.borda_superior,
