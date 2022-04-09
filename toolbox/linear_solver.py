@@ -1,11 +1,14 @@
 import numba as nb
 import numpy as np
 
+from toolbox.medicoes import timer
+
 TOL = 1e-10
 MAX_ITERATIONS = 1000
 
 
-#@nb.njit
+#@timer
+@nb.njit
 def solve_linear_system(A, B, vector_initial, n_cols, main_col = 2): #TODO: Mudar o nome de n_cols.
     """
     Solves a penta diagonal linear system using the TDMA method iteratively.
@@ -22,7 +25,7 @@ def solve_linear_system(A, B, vector_initial, n_cols, main_col = 2): #TODO: Muda
     return vector
 
 
-#@nb.njit
+@nb.njit
 def tdma_mod(A, B, main_col = 2):
     """
     Solves a tri diagonal linear system using the TDMA method.
@@ -46,7 +49,7 @@ def tdma_mod(A, B, main_col = 2):
 
     return vector
 
-
+@nb.njit
 def error_max(vector1, vector2) -> float:
     """
     Computes the maximum error between two vectors.
@@ -54,7 +57,7 @@ def error_max(vector1, vector2) -> float:
     return np.max(np.abs(vector1 - vector2)/np.abs(vector1))
 
 
-#@nb.njit
+@nb.njit
 def convert_to_tdm(A, B, estimate_vector, n_cols,  omit_cols = (0, 4)):#TODO: Mudar o nome de n_cols.
     """
     Converts a matrix A and a vector B to a TDM system.

@@ -1,7 +1,6 @@
 import numpy as np
 
 from celula import Celula
-from condicoes import Condicoes
 from frame import Frame 
 
 

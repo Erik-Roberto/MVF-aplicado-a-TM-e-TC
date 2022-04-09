@@ -1,0 +1,12 @@
+
+__pycache__/frame.cpython-39.pyc
+cython_toolbox/setup.py
+cython_toolbox/linear_solver.pyx
+cython_toolbox/linear_solver.cp39-win_amd64.pyd
+cython_toolbox/linear_solver.c
+cython_toolbox/__pycache__/__init__.cpython-39.pyc
+cython_toolbox/__init__.py
+build/temp.win-amd64-3.9/Release/toolbox/linear_solver.obj
+build/temp.win-amd64-3.9/Release/toolbox/linear_solver.cp39-win_amd64.lib
+build/temp.win-amd64-3.9/Release/toolbox/linear_solver.cp39-win_amd64.exp
+build/lib.win-amd64-3.9/toolbox/linear_solver.cp39-win_amd64.pyd

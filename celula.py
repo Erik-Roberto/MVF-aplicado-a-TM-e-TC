@@ -71,6 +71,7 @@ class Celula:
         b = self.valores[-1]/self.malha.dt
         return a0, b
 
+
     def update_valores(self, phi):
         self.valores = np.append(self.valores, phi)
 

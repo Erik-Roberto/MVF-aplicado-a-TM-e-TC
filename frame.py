@@ -13,7 +13,7 @@ class Frame:
 
     def borda_padrao(self):
         # TODO: Adicionar valores padrão por arquivo de config
-        horizontal = [{"pos": (0, self.ns1), "tipo": Condicoes.Tipo_1, "valor": 273}] 
+        horizontal = [{"pos": (0, self.ns1), "tipo": Condicoes.Tipo_2, "valor": 0}] 
         vertical = [{"pos": (0, self.ns2), "tipo": Condicoes.Tipo_1, "valor": 273}]
         self.borda_superior = horizontal
         self.borda_inferior = horizontal

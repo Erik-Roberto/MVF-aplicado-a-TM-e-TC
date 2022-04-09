@@ -80,7 +80,7 @@ class InterfaceCCTipo1(Interface):
 
 
     def calc_b(self):
-        numerador = self.area*self.cel.gama2
+        numerador = self.area*self.cel.gama2*self.phi_f
         denominador = self.cel.geo.volume*self.cel.gama1*self.ds
         return numerador/denominador
 
