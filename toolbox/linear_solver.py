@@ -1,15 +1,14 @@
 import numba as nb
 import numpy as np
 
-from toolbox.medicoes import timer
 
-TOL = 1e-10
-MAX_ITERATIONS = 1000
+import config as conf
+TOL = conf.tolerancia
+MAX_ITERATIONS = conf.it_max
 
 
-#@timer
 @nb.njit
-def solve_linear_system(A, B, vector_initial, n_cols, main_col = 2): #TODO: Mudar o nome de n_cols.
+def solve_linear_system(A, B, vector_initial, qtd_col, main_col = 2):
     """
     Solves a penta diagonal linear system using the TDMA method iteratively.
     """
@@ -17,7 +16,7 @@ def solve_linear_system(A, B, vector_initial, n_cols, main_col = 2): #TODO: Muda
     vector_old = vector_initial.copy()
     error = 10
     while error > TOL and it < MAX_ITERATIONS:
-        B_mod = convert_to_tdm(A, B, vector_old, n_cols)
+        B_mod = convert_to_tdm(A, B, vector_old, qtd_col)
         vector = tdma_mod(A, B_mod, main_col)
         error = error_max(vector, vector_old)
         vector_old = vector.copy()
@@ -58,7 +57,7 @@ def error_max(vector1, vector2) -> float:
 
 
 @nb.njit
-def convert_to_tdm(A, B, estimate_vector, n_cols,  omit_cols = (0, 4)):#TODO: Mudar o nome de n_cols.
+def convert_to_tdm(A, B, estimate_vector, qtd_col,  omit_cols = (0, 4)):
     """
     Converts a matrix A and a vector B to a TDM system.
     """
@@ -68,34 +67,33 @@ def convert_to_tdm(A, B, estimate_vector, n_cols,  omit_cols = (0, 4)):#TODO: Mu
     B_mod = np.zeros(shape = rows, dtype = np.float64)
     
 
-    #TODO: Check if this section is correct.
     #TODO: Find a better way to do this.
-    for i in range(n_cols):
-        left_diag = - A[i][omit_cols[1]]*estimate_vector[i + n_cols]
+    for i in range(qtd_col):
+        left_diag = - A[i][omit_cols[1]]*estimate_vector[i + qtd_col]
         B_mod[i] = B[i] + left_diag
 
-    for i in range(n_cols, rows - n_cols):
-        left_diag = - A[i][omit_cols[1]]*estimate_vector[i + n_cols]
-        right_diag = - A[i][omit_cols[0]]*estimate_vector[i - n_cols]
+    for i in range(qtd_col, rows - qtd_col):
+        left_diag = - A[i][omit_cols[1]]*estimate_vector[i + qtd_col]
+        right_diag = - A[i][omit_cols[0]]*estimate_vector[i - qtd_col]
         B_mod[i] = B[i] + left_diag + right_diag
 
-    for i in range(rows - n_cols, rows):
-        right_diag = - A[i][omit_cols[0]]*estimate_vector[i - n_cols]
+    for i in range(rows - qtd_col, rows):
+        right_diag = - A[i][omit_cols[0]]*estimate_vector[i - qtd_col]
         B_mod[i] = B[i] + right_diag
     
     return B_mod
 
 
-def convert_to_sparse_matrix(matrix, n_cols):
+def convert_to_sparse_matrix(matrix, qtd_col):
     """
     Converts a matrix to a sparse matrix.
     """
     rows = len(matrix)
     sparse_matrix = np.zeros(shape = (rows, rows), dtype = np.float64)
     for i in range(rows):
-        if i >= n_cols:
+        if i >= qtd_col:
             # First line of the matrix (without left values).
-            sparse_matrix[i][i - n_cols] = matrix[i][0]
+            sparse_matrix[i][i - qtd_col] = matrix[i][0]
         if i >= 1:
             # Lines without left values beyond n_cols.
             sparse_matrix[i][i - 1] = matrix[i][1]
@@ -104,9 +102,9 @@ def convert_to_sparse_matrix(matrix, n_cols):
             # Lines without right values beyond n_cols.
             sparse_matrix[i][i + 1] = matrix[i][3]
         
-        if i + n_cols < len(matrix[i]):
+        if i + qtd_col < len(matrix[i]):
             # Last line of the matrix (without right values).
-            sparse_matrix[i][i + n_cols] = matrix[i][4]
+            sparse_matrix[i][i + qtd_col] = matrix[i][4]
 
         sparse_matrix[i][i] = matrix[i][2]
     

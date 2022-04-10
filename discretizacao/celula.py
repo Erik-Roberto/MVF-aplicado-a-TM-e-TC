@@ -1,9 +1,9 @@
 import numpy as np
 
-import interfaces as inter
-import geometrias as geo
-from condicoes import Condicoes
-import propriedades as prop
+import discretizacao.interfaces as inter
+import discretizacao.geometrias as geo
+from discretizacao.condicoes import Condicoes
+import discretizacao.propriedades as prop
 
 
 class Celula:

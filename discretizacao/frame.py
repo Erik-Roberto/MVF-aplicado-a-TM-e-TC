@@ -1,4 +1,4 @@
-from condicoes import Condicoes
+from discretizacao.condicoes import Condicoes
 
 class Frame:
     def __init__(self, ns1, ns2):
@@ -6,15 +6,16 @@ class Frame:
         ns1 (int): Número de volumes na direção 1 (Horizontal)
         ns2 (int): Número de volumes na direção 2 (Vertical)
         """
+        self.tipo_padrao = Condicoes.Tipo_1
+        self.valor_padrao = 273
         self.ns1 = ns1
         self.ns2 = ns2
         self.borda_padrao()
 
 
     def borda_padrao(self):
-        # TODO: Adicionar valores padrão por arquivo de config
-        horizontal = [{"pos": (0, self.ns1), "tipo": Condicoes.Tipo_2, "valor": 0}] 
-        vertical = [{"pos": (0, self.ns2), "tipo": Condicoes.Tipo_1, "valor": 273}]
+        horizontal = [{"pos": (0, self.ns1), "tipo":self.tipo_padrao, "valor": self.valor_padrao}] 
+        vertical = [{"pos": (0, self.ns2), "tipo": self.tipo_padrao, "valor": self.valor_padrao}]
         self.borda_superior = horizontal
         self.borda_inferior = horizontal
         self.borda_interior = vertical

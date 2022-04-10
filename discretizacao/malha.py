@@ -1,7 +1,7 @@
 import numpy as np
 
-from celula import Celula
-from frame import Frame 
+from discretizacao.celula import Celula
+from discretizacao.frame import Frame 
 
 
 class Malha:
@@ -118,7 +118,30 @@ class Malha:
         self.s2 = np.linspace(self.dominio[1][0],
                               self.dominio[1][1],
                               self.ns2 + 1)
+        self.s1_plot = np.linspace(self.dominio[0][0],
+                              self.dominio[0][1],
+                              self.ns1)
+        self.s2_plot = np.linspace(self.dominio[1][0],
+                              self.dominio[1][1],
+                              self.ns2)
+
+        
+        
         self.t = np.linspace(self.dominio[2][0],
                              self.dominio[2][1],
                              self.nt)
+
+    
+    def atualizar_celulas(self, valores):
+        for i, lista in enumerate(self.malha):
+            for j, celula in enumerate(lista):
+                celula.update_valores(valores[i*self.ns2 + j])
+
+
+    def pegar_valores_celulas(self, index):
+        valores = np.zeros(shape = (self.ns1, self.ns2))
+        for i, lista in enumerate(self.malha):
+            for j, celula in enumerate(lista):
+                valores[i][j] = celula.valores[index]
+        return valores
 
