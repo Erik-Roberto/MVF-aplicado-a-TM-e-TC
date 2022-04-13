@@ -105,12 +105,12 @@ class PropMassa(Propriedade):
         return 1
     
 
-    def gama2(self, w, temperatura):
+    def gama2(self, temperatura, w):
         return self.difusividade_efetiva(w, temperatura)
     
 
     @staticmethod
-    def difusividade_efetiva(w, temperatura):
+    def difusividade_efetiva(temperatura, w):
         # m2/s
         #Ea = 5000
         #D0 = 1E-2

@@ -19,19 +19,19 @@ temperatura_ini = 293    #K
 c_ini = 8178.22          #mol/m3
 tempo_inicial = 0        #s
 
-tempo_simulacao = 20   # s
+tempo_simulacao = 3800  # s
 
 eqacao_h_std = True      # Define  qual equação de h será usada (padrão ou custom)
 
 #Geometria:
 dimensao1 = 0.15/2       #m (R / x)
-dimensao2 = 0.005        #m (z / y)
+dimensao2 = 0.05        #m (z / y)
 geometria = 'cilindrico'   #Opções: cilindrico ou cartesiano
 
 #Parametros de simulação
-n_s1 = 10                 #  (R / x)
-n_s2 = 10                 #  (z / y)
-n_t = 200                 # tempo
+n_s1 = 50                 #  (R / x)
+n_s2 = 50                 #  (z / y)
+n_t = 1000                 # tempo
 
 tolerancia = 10**-3
 it_max = 100

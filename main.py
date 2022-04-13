@@ -29,14 +29,19 @@ def main():
         geometria = conf.geometria
         )
   
-    frame = Frame(conf.n_s1, conf.n_s2)
+    frame = Frame(conf.
+    n_s1, conf.n_s2)
     malha.setup(frame = frame)
     
+
+    # malha.gerar_sistema_linear()
+    # print()
     for _ in range(conf.n_t):
         malha.gerar_sistema_linear()
         #Solve by modified TMDA 
         resp_tdma = tb.solve_linear_system(malha.coeficientes, malha.vetor_independente, malha.phi, malha.ns1)
         malha.atualizar_celulas(resp_tdma)
+        print(f"->it: {_} - {_/conf.n_t*100:.2f}%")
 
     hm = tb.Heatmap(malha)
     #hm.plot_heatmap(conf.n_t)

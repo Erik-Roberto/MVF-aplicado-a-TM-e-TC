@@ -29,6 +29,7 @@ class Celula:
         """
         self.malha = malha
         self.valores = np.array([phi_0], dtype = float)
+        self.phi_2 = 1
         self.tipo_celula = tipo_celula
         self.pos = pos
         self.coord = coordenadas
@@ -95,8 +96,7 @@ class Celula:
         elif self.geometria.lower() == 'cartesiano':
             dx = self.malha.ds1
             dy = self.malha.ds2
-            dz = self.malha.ds3
-            self.geo = geo.Cartesiano(dx, dy, dz)
+            self.geo = geo.Cartesiano(dx, dy)
         else:
             raise ValueError("Geometria inválida.")
 
@@ -143,7 +143,7 @@ class Celula:
         else:
             raise ValueError("Tipo de célula não válido.")
 
-    
+
     def tipo_celula_1(self, coluna, linha):
         # Vértice superior esquerdo
         condicao_norte = self.condicoes.get_condicao(coluna, "superior")
@@ -160,7 +160,6 @@ class Celula:
         self.exterior = self.exterior_std()
         self.interior = interior(valor_cc_interior, self, self.geo.ds1,
                                      self.geo.area_interna, tipo = 'entrada')
-
 
     def tipo_celula_2(self, coluna, linha):
         # Vertice superior direito
@@ -292,9 +291,9 @@ class Celula:
         return inter.InterfaceDifusiva(self, self.geo.ds1, self.geo.area_interna)
 
 
-    def calc_gama1(self): #FIXME: Mudar automaticamente quem é phi e phi2 com base no tipo do problema
-        return self.propriedades.gama1(1, self.valores[-1])
+    def calc_gama1(self):
+        return self.propriedades.gama1(self.phi_2, self.valores[-1])
 
 
-    def calc_gama2(self): #FIXME: Mudar automaticamente quem é phi e phi2 com base no tipo do problema
-        return self.propriedades.gama2(1, self.valores[-1])
+    def calc_gama2(self):
+        return self.propriedades.gama2(self.phi_2, self.valores[-1])

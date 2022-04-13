@@ -6,16 +6,24 @@ class Frame:
         ns1 (int): Número de volumes na direção 1 (Horizontal)
         ns2 (int): Número de volumes na direção 2 (Vertical)
         """
-        self.tipo_padrao = Condicoes.Tipo_1
-        self.valor_padrao = 273
+        self.tipo_padrao = Condicoes.Tipo_2
+        self.valor_padrao = 0
         self.ns1 = ns1
         self.ns2 = ns2
         self.borda_padrao()
-
+        self.opcoes = {
+                        "superior": self.borda_superior,
+                        "inferior": self.borda_inferior,
+                        "exterior": self.borda_exterior,
+                        "interior": self.borda_interior,
+                    }
 
     def borda_padrao(self):
-        horizontal = [{"pos": (0, self.ns1), "tipo":self.tipo_padrao, "valor": self.valor_padrao}] 
-        vertical = [{"pos": (0, self.ns2), "tipo": self.tipo_padrao, "valor": self.valor_padrao}]
+        #horizontal = [{"pos": (0, self.ns1), "tipo":self.tipo_padrao, "valor": self.valor_padrao}] 
+        #vertical = [{"pos": (0, self.ns2), "tipo": self.tipo_padrao, "valor": self.valor_padrao}]
+        vertical = [{"pos": (0, self.ns2), "tipo": Condicoes.Tipo_1, "valor": 200}]
+        horizontal = [{"pos": (0, self.ns1), "tipo": Condicoes.Tipo_1, "valor": 200}]
+        
         self.borda_superior = horizontal
         self.borda_inferior = horizontal
         self.borda_interior = vertical
@@ -35,13 +43,7 @@ class Frame:
 
 
     def switcher(self, borda):
-        opcoes = {
-            "superior": self.borda_superior,
-            "inferior": self.borda_inferior,
-            "exterior": self.borda_exterior,
-            "interior": self.borda_interior,
-            }
-        return opcoes.get(borda.lower())
+        return self.opcoes.get(borda.lower())
 
 
     def definir_borda_superior(self, lista):

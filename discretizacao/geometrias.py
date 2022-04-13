@@ -1,7 +1,7 @@
 from math import pi
 
 class Cartesiano:
-    def __init__(self, dx, dy, dz):
+    def __init__(self, dx, dy, dz = 1):
         """
         dx (float): Tamanho do V.C. na direção x
         dy (float): Tamanho do V.C. na direção y

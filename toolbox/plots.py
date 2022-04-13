@@ -5,12 +5,11 @@ import pandas as pd
 import seaborn as sns
 
 
-
 FRAME_RATE = 30
 
 
 class Heatmap:
-    def __init__(self, malha, cmap = "YlOrBr"):
+    def __init__(self, malha, cmap = "Spectral_r"):
         grid_kws = {'width_ratios': (0.9, 0.05), 'wspace': 0.2}
         self.fig, (self.ax, self.cbar_ax) = plt.subplots(1,2, gridspec_kw = grid_kws, figsize = (10, 8))
         self.malha = malha
@@ -30,9 +29,10 @@ class Heatmap:
                             ax = self.ax,
                             cbar_ax = self.cbar_ax,
                             cmap = self.cmap,
-                            vmin = 273, #TODO: criar métodos encontrar vmin e vmax ideais
+                            vmin = 200, #TODO: criar métodos encontrar vmin e vmax ideais
                             vmax = 293,
                           )
+        #TODO: Criar legenda dinâmica com o índice temporal e valor do tempo.
         self.ax.set_xticklabels(['{:.2f}'.format(float(t.get_text())) for t in self.ax.get_xticklabels()])
         self.ax.set_yticklabels(['{:.3f}'.format(float(t.get_text())) for t in self.ax.get_yticklabels()])
 

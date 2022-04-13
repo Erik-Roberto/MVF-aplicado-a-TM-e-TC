@@ -93,8 +93,8 @@ class Malha:
             self.malha.append([])
             for j in range(self.ns1): #colunas
                 tipo = self.switcher(i, j)
-                pos1 = (self.s1[j+1] + self.s1[j])
-                pos2 = (self.s2[i+1] + self.s2[i])
+                pos1 = (self.s1[j+1] + self.s1[j])/2
+                pos2 = (self.s2[i+1] + self.s2[i])/2
                 celula = Celula(self,
                                 self.phi_0,
                                 tipo,
@@ -111,7 +111,6 @@ class Malha:
         self.ds1 = (self.dominio[0][1] - self.dominio[0][0])/self.ns1
         self.ds2 = (self.dominio[1][1] - self.dominio[1][0])/self.ns2
         self.dt = (self.dominio[2][1] - self.dominio[2][0])/self.nt
-
         self.s1 = np.linspace(self.dominio[0][0],
                               self.dominio[0][1],
                               self.ns1 + 1)
@@ -124,9 +123,6 @@ class Malha:
         self.s2_plot = np.linspace(self.dominio[1][0],
                               self.dominio[1][1],
                               self.ns2)
-
-        
-        
         self.t = np.linspace(self.dominio[2][0],
                              self.dominio[2][1],
                              self.nt)
@@ -145,3 +141,8 @@ class Malha:
                 valores[i][j] = celula.valores[index]
         return valores
 
+
+    def update_phi_2(self, malha_externa):
+        for i, lista in enumerate(self.malha):
+            for j, celula in enumerate(lista):
+                celula.phi_2(malha_externa[i][j])
