@@ -1,3 +1,5 @@
+import colorama
+
 from discretizacao import Frame, Malha
 import config as conf
 import toolbox as tb
@@ -10,17 +12,28 @@ def print_matrix(matrix):
         print()
 
 
+def progress_bar(progress, total):
+    color = colorama.Fore.GREEN
+    percent = 100 * (progress / total)
+    bar = "█"*int(percent) + "-"*(100 - int(percent))
+    if percent == 100:
+        print(color + f"\r|{bar}| {percent: .2f}%", end="\n")
+    else:
+        print(color + f"\r|{bar}| {percent: .2f}%", end="\r")
+    
+
 def main():
     dominio = [
         (0, conf.dimensao1),
         (0, conf.dimensao2),
-        (conf.tempo_inicial, conf.tempo_simulacao)
+        (conf.tempo_inicial, conf.tempo_simulacao)    
     ]
     discretizacao = [
         conf.n_s1,
         conf.n_s2,
         conf.n_t
     ]
+
     malha = Malha(
         dominio = dominio,
         divisoes = discretizacao,
@@ -34,18 +47,19 @@ def main():
     malha.setup(frame = frame)
     
 
-    # malha.gerar_sistema_linear()
-    # print()
+    colorama.init()
     for _ in range(conf.n_t):
         malha.gerar_sistema_linear()
         #Solve by modified TMDA 
         resp_tdma = tb.solve_linear_system(malha.coeficientes, malha.vetor_independente, malha.phi, malha.ns1)
         malha.atualizar_celulas(resp_tdma)
-        print(f"->it: {_} - {_/conf.n_t*100:.2f}%")
+        progress_bar(_, conf.n_t-1)
+    colorama.Style.RESET_ALL
 
+    #Plotando animação
     hm = tb.Heatmap(malha)
-    #hm.plot_heatmap(conf.n_t)
     hm.call_animation()
+
 
 if __name__ == "__main__":
     main()

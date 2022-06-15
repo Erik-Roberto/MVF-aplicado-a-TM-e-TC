@@ -57,6 +57,7 @@ class Malha:
                 self.phi[index] = celula.valores[self.index_temporal - 1]
 
 
+    #TODO: Retirar o switch da malha, deixar apenas o da célula (ifs que definem o tipo)
     def switcher(self, i, j):
         if i == 0:
             if j == 0: # Vértice superior esquerdo

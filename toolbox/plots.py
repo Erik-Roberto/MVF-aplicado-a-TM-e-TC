@@ -5,7 +5,7 @@ import pandas as pd
 import seaborn as sns
 
 
-FRAME_RATE = 30
+FRAME_RATE = 100
 
 
 class Heatmap:
@@ -19,6 +19,7 @@ class Heatmap:
     def plot_heatmap(self, index_temporal):
         x = self.malha.s1_plot
         y = self.malha.s2_plot
+        tempo = self.malha.t[index_temporal]
         z = self.malha.pegar_valores_celulas(index_temporal)
 
         df = pd.DataFrame(z, index = y[::-1], columns = x)
@@ -35,6 +36,11 @@ class Heatmap:
         #TODO: Criar legenda dinâmica com o índice temporal e valor do tempo.
         self.ax.set_xticklabels(['{:.2f}'.format(float(t.get_text())) for t in self.ax.get_xticklabels()])
         self.ax.set_yticklabels(['{:.3f}'.format(float(t.get_text())) for t in self.ax.get_yticklabels()])
+        self.update_titulo(tempo)
+
+
+    def update_titulo(self, tempo):
+        self.ax.set_title(f"Tempo: {tempo:.1f}s")
 
 
     def call_animation(self):

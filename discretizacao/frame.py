@@ -37,9 +37,10 @@ class Frame:
         for dicionario in lista:
             if not isinstance(dicionario, dict):
                 raise TypeError("Objetos da lista devem ser dicionários.")
-            if not chaves in dicionario.keys():
-                chave = [k for k in dicionario.keys() if not k in chaves]
-                raise ValueError(f"A(s) chave(s) {chave} deve(m) ser passada(s).")
+
+            for chave in chaves:
+                if not chave in dicionario.keys():
+                    raise ValueError(f"A chave '{chave}' está faltando.")
 
 
     def switcher(self, borda):
@@ -54,7 +55,7 @@ class Frame:
         """
         self.verifica_condicoes(lista)
         self.borda_superior = lista
-
+        self.opcoes.update({"superior": self.borda_superior})
 
     def definir_borda_inferior(self, lista):
         """
@@ -64,7 +65,7 @@ class Frame:
         """
         self.verifica_condicoes(lista)
         self.borda_inferior = lista
-
+        self.opcoes.update({"inferior": self.borda_inferior})
 
     def definir_borda_exterior(self, lista):
         """
@@ -74,7 +75,7 @@ class Frame:
         """
         self.verifica_condicoes(lista)
         self.borda_exterior = lista
-
+        self.opcoes.update({"exterior": self.borda_exterior})
 
     def definir_borda_interior(self, lista):
         """
@@ -84,11 +85,14 @@ class Frame:
         """
         self.verifica_condicoes(lista)
         self.borda_interior = lista
-
+        self.opcoes.update({"interior": self.borda_interior})
 
     def get_condicao(self, pos, borda):
         condicoes = self.switcher(borda)
         for dicionario in condicoes:
             if dicionario["pos"][0] <= pos < dicionario["pos"][1]:
                 return (dicionario["tipo"],  dicionario["valor"])
+        #TODO:Melhorar maneira de levantar exceção
+        raise ValueError("Não foi encontrado nenhuma condição de contorno na posição especificada.")
+
 

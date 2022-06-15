@@ -146,11 +146,11 @@ class Celula:
 
     def tipo_celula_1(self, coluna, linha):
         # Vértice superior esquerdo
-        condicao_norte = self.condicoes.get_condicao(coluna, "superior")
+        condicao_norte = self.condicoes.get_condicao(self.pos[0], "superior")
         norte = self.case_condicoes.get(condicao_norte[0])
         valor_cc_norte = condicao_norte[1]
         
-        condicao_interior = self.condicoes.get_condicao(linha, "interior")
+        condicao_interior = self.condicoes.get_condicao(self.pos[1], "interior")
         interior = self.case_condicoes.get(condicao_interior[0])
         valor_cc_interior = condicao_interior[1]
 
@@ -161,13 +161,14 @@ class Celula:
         self.interior = interior(valor_cc_interior, self, self.geo.ds1,
                                      self.geo.area_interna, tipo = 'entrada')
 
+
     def tipo_celula_2(self, coluna, linha):
         # Vertice superior direito
-        condicao_norte = self.condicoes.get_condicao(coluna, "superior")
+        condicao_norte = self.condicoes.get_condicao(self.pos[0], "superior")
         norte = self.case_condicoes.get(condicao_norte[0])
         valor_cc_norte = condicao_norte[1]
         
-        condicao_exterior = self.condicoes.get_condicao(linha, "exterior")
+        condicao_exterior = self.condicoes.get_condicao(self.pos[1], "exterior")
         exterior = self.case_condicoes.get(condicao_exterior[0])
         valor_cc_exterior = condicao_exterior[1]
 
@@ -181,11 +182,11 @@ class Celula:
 
     def tipo_celula_3(self, coluna, linha):
         # Vertice inferior esquerdo
-        condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
+        condicao_sul = self.condicoes.get_condicao(self.pos[0], "inferior")
         sul = self.case_condicoes.get(condicao_sul[0])
         valor_cc_sul = condicao_sul[1]
 
-        condicao_interior = self.condicoes.get_condicao(linha, "interior")
+        condicao_interior = self.condicoes.get_condicao(self.pos[1], "interior")
         interior = self.case_condicoes.get(condicao_interior[0])
         valor_cc_interior = condicao_interior[1]
 
@@ -199,11 +200,11 @@ class Celula:
 
     def tipo_celula_4(self, coluna, linha):
         # Vertice inferior direito
-        condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
+        condicao_sul = self.condicoes.get_condicao(self.pos[0], "inferior")
         sul = self.case_condicoes.get(condicao_sul[0])
         valor_cc_sul = condicao_sul[1]
 
-        condicao_exterior = self.condicoes.get_condicao(linha, "exterior")
+        condicao_exterior = self.condicoes.get_condicao(self.pos[1], "exterior")
         exterior = self.case_condicoes.get(condicao_exterior[0])
         valor_cc_exterior = condicao_exterior[1]
 
@@ -217,7 +218,7 @@ class Celula:
 
     def tipo_celula_5(self, coluna):
         # Aresta superior
-        condicao_norte = self.condicoes.get_condicao(coluna, "superior")
+        condicao_norte = self.condicoes.get_condicao(self.pos[0], "superior")
         norte = self.case_condicoes.get(condicao_norte[0])
         valor_cc_norte = condicao_norte[1]
 
@@ -230,7 +231,7 @@ class Celula:
 
     def tipo_celula_6(self, coluna):
         # Aresta inferior
-        condicao_sul = self.condicoes.get_condicao(coluna, "inferior")
+        condicao_sul = self.condicoes.get_condicao(self.pos[0], "inferior")
         sul = self.case_condicoes.get(condicao_sul[0])
         valor_cc_sul = condicao_sul[1]
 
@@ -243,7 +244,7 @@ class Celula:
 
     def tipo_celula_7(self, linha):
         # Aresta direita
-        condicao_exterior = self.condicoes.get_condicao(linha, "exterior")
+        condicao_exterior = self.condicoes.get_condicao(self.pos[1], "exterior")
         exterior = self.case_condicoes.get(condicao_exterior[0])
         valor_cc_exterior = condicao_exterior[1]
 
@@ -256,7 +257,7 @@ class Celula:
 
     def tipo_celula_8(self, linha):
          # Aresta esquerda
-        condicao_interior = self.condicoes.get_condicao(linha, "interior")
+        condicao_interior = self.condicoes.get_condicao(self.pos[1], "interior")
         interior = self.case_condicoes.get(condicao_interior[0])
         valor_cc_interior = condicao_interior[1]
 
