@@ -21,8 +21,8 @@ class Frame:
     def borda_padrao(self):
         #horizontal = [{"pos": (0, self.ns1), "tipo":self.tipo_padrao, "valor": self.valor_padrao}] 
         #vertical = [{"pos": (0, self.ns2), "tipo": self.tipo_padrao, "valor": self.valor_padrao}]
-        vertical = [{"pos": (0, self.ns2), "tipo": Condicoes.Tipo_1, "valor": 200}]
-        horizontal = [{"pos": (0, self.ns1), "tipo": Condicoes.Tipo_1, "valor": 200}]
+        vertical = [{"pos": (0, self.ns2), "tipo": Condicoes.Tipo_2, "valor": 0}]
+        horizontal = [{"pos": (0, self.ns1), "tipo": Condicoes.Tipo_2, "valor": 0}]
         
         self.borda_superior = horizontal
         self.borda_inferior = horizontal
@@ -33,14 +33,14 @@ class Frame:
     def verifica_condicoes(self, lista):
         chaves = ("pos", "tipo", "valor")
         if not isinstance(lista, list):
-            raise TypeError("Objetos de atribução devem ser lista.") 
+            raise TypeError("Objetos de atribuição devem ser lista.") 
         for dicionario in lista:
             if not isinstance(dicionario, dict):
                 raise TypeError("Objetos da lista devem ser dicionários.")
 
             for chave in chaves:
                 if not chave in dicionario.keys():
-                    raise ValueError(f"A chave '{chave}' está faltando.")
+                    raise ValueError(f"A chave '{chave}' está faltando.") #TODO: levantar exceção adequada - mudar o ValueError
 
 
     def switcher(self, borda):
@@ -56,6 +56,7 @@ class Frame:
         self.verifica_condicoes(lista)
         self.borda_superior = lista
         self.opcoes.update({"superior": self.borda_superior})
+
 
     def definir_borda_inferior(self, lista):
         """
@@ -87,6 +88,7 @@ class Frame:
         self.borda_interior = lista
         self.opcoes.update({"interior": self.borda_interior})
 
+    #FIXME: A definição de CCs na borda exterior inverte o posicionamento das CCs
     def get_condicao(self, pos, borda):
         condicoes = self.switcher(borda)
         for dicionario in condicoes:

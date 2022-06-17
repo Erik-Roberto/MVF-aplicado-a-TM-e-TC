@@ -22,7 +22,7 @@ class Malha:
         self.ns2 = divisoes[1] # z / y
         self.nt = divisoes[2]
         self.dominio = dominio
-        self.phi_0 = phi_0
+        self.phi_0 = phi_0 #TODO: implementar maneira de definir phi_0 com funções
         self.geometria = geometria
         self.tipo_problema = tipo_problema
         self.malha = []
@@ -32,7 +32,8 @@ class Malha:
         text = ""
         for lista in self.malha:
             for celula in lista:
-                text += f"celula {celula.coord}: {celula.__str__()}"    
+                #text += f"celula {celula.coord}: {celula.__str__()}"    
+                text += f"celula {celula.coord}: {celula.__str__()}"
         return text
 
 
@@ -128,11 +129,16 @@ class Malha:
                              self.dominio[2][1],
                              self.nt)
 
-    
     def atualizar_celulas(self, valores):
         for i, lista in enumerate(self.malha):
             for j, celula in enumerate(lista):
                 celula.update_valores(valores[i*self.ns2 + j])
+
+
+    def atualizar_phis(self, phis, phis_2): #TODO: melhorar esses nomes
+         for i, lista in enumerate(self.malha):
+            for j, celula in enumerate(lista):
+                celula.update_phis(phis[i*self.ns2 + j], phis_2[i*self.ns2 + j])
 
 
     def pegar_valores_celulas(self, index):
@@ -142,6 +148,13 @@ class Malha:
                 valores[i][j] = celula.valores[index]
         return valores
 
+
+    def pegar_phis(self, index):
+        phis = np.zeros(shape = (self.ns1*self.ns2))
+        for i, lista in enumerate(self.malha):
+            for j, celula in enumerate(lista):
+                phis[i*self.ns2 + j] = celula.valores[index]
+        return phis
 
     def update_phi_2(self, malha_externa):
         for i, lista in enumerate(self.malha):

@@ -4,12 +4,12 @@ import config as conf
 
 class Propriedade(ABC):
     @abstractmethod
-    def gama1(self):
+    def gama1(self, *args):
         pass
     
     
     @abstractmethod
-    def gama2(self):
+    def gama2(self, *args):
         pass
     
 
@@ -101,7 +101,7 @@ class PropTemperatura(Propriedade):
 
 
 class PropMassa(Propriedade):
-    def gama1(self):
+    def gama1(self, *args):
         return 1
     
 
@@ -115,7 +115,7 @@ class PropMassa(Propriedade):
         #Ea = 5000
         #D0 = 1E-2
         #D_efetiva = D0*exp(-Ea/(R*T))
-        d_efetiva = 3.216*10^-9
+        d_efetiva = 3.216*10**-9
         return d_efetiva
 
 

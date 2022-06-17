@@ -29,6 +29,7 @@ class Celula:
         """
         self.malha = malha
         self.valores = np.array([phi_0], dtype = float)
+        self.phi = self.valores[-1]
         self.phi_2 = 1
         self.tipo_celula = tipo_celula
         self.pos = pos
@@ -73,6 +74,11 @@ class Celula:
         return a0, b
 
 
+    def update_phis(self, phi, phi_2): #TODO: Melhorar nome do método
+        self.phi = phi
+        self.phi_2 = phi_2
+
+
     def update_valores(self, phi):
         self.valores = np.append(self.valores, phi)
 
@@ -106,35 +112,35 @@ class Celula:
         coluna = self.coord[1]
         if self.tipo_celula == 1:
             # Vértice superior esquerdo
-            self.tipo_celula_1(coluna, linha)
+            self.tipo_celula_1()
 
         elif self.tipo_celula == 2:
             # Vertice superior direito
-            self.tipo_celula_2(coluna, linha)
+            self.tipo_celula_2()
 
         elif self.tipo_celula == 3:
             # Vertice inferior esquerdo
-            self.tipo_celula_3(coluna, linha)
+            self.tipo_celula_3()
 
         elif self.tipo_celula == 4:
             # Vertice inferior direito
-            self.tipo_celula_4(coluna, linha)
+            self.tipo_celula_4()
 
         elif self.tipo_celula == 5:
             # Aresta superior
-            self.tipo_celula_5(coluna)
+            self.tipo_celula_5()
 
         elif self.tipo_celula == 6:
             # Aresta inferior
-            self.tipo_celula_6(coluna)
+            self.tipo_celula_6()
 
         elif self.tipo_celula == 7:
             # Aresta direita
-            self.tipo_celula_7(linha)
+            self.tipo_celula_7()
 
         elif self.tipo_celula == 8:
             # Aresta esquerda
-            self.tipo_celula_8(linha)
+            self.tipo_celula_8()
 
         elif self.tipo_celula == 9:
             # Volume interno
@@ -144,7 +150,7 @@ class Celula:
             raise ValueError("Tipo de célula não válido.")
 
 
-    def tipo_celula_1(self, coluna, linha):
+    def tipo_celula_1(self):
         # Vértice superior esquerdo
         condicao_norte = self.condicoes.get_condicao(self.pos[0], "superior")
         norte = self.case_condicoes.get(condicao_norte[0])
@@ -162,7 +168,7 @@ class Celula:
                                      self.geo.area_interna, tipo = 'entrada')
 
 
-    def tipo_celula_2(self, coluna, linha):
+    def tipo_celula_2(self):
         # Vertice superior direito
         condicao_norte = self.condicoes.get_condicao(self.pos[0], "superior")
         norte = self.case_condicoes.get(condicao_norte[0])
@@ -180,7 +186,7 @@ class Celula:
         self.interior = self.interior_std()
 
 
-    def tipo_celula_3(self, coluna, linha):
+    def tipo_celula_3(self):
         # Vertice inferior esquerdo
         condicao_sul = self.condicoes.get_condicao(self.pos[0], "inferior")
         sul = self.case_condicoes.get(condicao_sul[0])
@@ -198,7 +204,7 @@ class Celula:
                                  self.geo.area_interna, tipo = 'entrada')
         
 
-    def tipo_celula_4(self, coluna, linha):
+    def tipo_celula_4(self):
         # Vertice inferior direito
         condicao_sul = self.condicoes.get_condicao(self.pos[0], "inferior")
         sul = self.case_condicoes.get(condicao_sul[0])
@@ -216,7 +222,7 @@ class Celula:
         self.interior = self.interior_std()
 
 
-    def tipo_celula_5(self, coluna):
+    def tipo_celula_5(self):
         # Aresta superior
         condicao_norte = self.condicoes.get_condicao(self.pos[0], "superior")
         norte = self.case_condicoes.get(condicao_norte[0])
@@ -229,7 +235,7 @@ class Celula:
         self.interior = self.interior_std()
 
 
-    def tipo_celula_6(self, coluna):
+    def tipo_celula_6(self):
         # Aresta inferior
         condicao_sul = self.condicoes.get_condicao(self.pos[0], "inferior")
         sul = self.case_condicoes.get(condicao_sul[0])
@@ -242,7 +248,7 @@ class Celula:
         self.interior = self.interior_std()
 
 
-    def tipo_celula_7(self, linha):
+    def tipo_celula_7(self):
         # Aresta direita
         condicao_exterior = self.condicoes.get_condicao(self.pos[1], "exterior")
         exterior = self.case_condicoes.get(condicao_exterior[0])
@@ -255,7 +261,7 @@ class Celula:
         self.interior = self.interior_std()
 
 
-    def tipo_celula_8(self, linha):
+    def tipo_celula_8(self):
          # Aresta esquerda
         condicao_interior = self.condicoes.get_condicao(self.pos[1], "interior")
         interior = self.case_condicoes.get(condicao_interior[0])
